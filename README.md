@@ -1,21 +1,22 @@
 # Special K Replacement Script
 
-This PowerShell script automates the process of updating DLL files for games, particularly for the "Special K" framework. It supports bulk operations, handling multiple game directories, and ensures no unintentional updates through a configurable blacklist.
+This PowerShell script is specifically designed to update "Special K" DLL files in game directories. It ensures that only the "Special K" framework DLLs are updated, supports bulk operations across multiple game directories, and prevents unintentional updates through a configurable blacklist.
 
 ## Features
 
 - **DLL Replacement:** Automatically replaces existing Special K DLLs with updated versions for both 32-bit and 64-bit architectures.
-- **Multi-Directory Support:** Process multiple game directories at once by specifying them in a `game_paths.txt` file or dragging a directory onto the script.
+- **Multi-Directory Support:** Process multiple game directories at once by specifying them in a `game_paths.txt` file.
 - **Blacklist Management:** Skip specific game folders by adding their names to a `blacklist.txt` file.
 - **Comments in Configuration Files:** Lines starting with `;` in `game_paths.txt` or `blacklist.txt` are treated as comments and ignored.
 - **Dynamic Backup Support:** If replacement DLLs are not found locally, the script looks for backups in `%LocalAppData%\Programs\Special K` (default install location for Special K).
+- **Priority Management:** The script prioritizes DLLs found alongside the script before using the local Special K install.
 - **Colored Output:** Provides clear and color-coded log messages for better readability.
 
 ## Requirements
 
 - Windows OS
 - PowerShell
-- The updated DLLs (`SpecialK32.dll` and `SpecialK64.dll`) located alongside the script or in the backup path.
+- SpecialK
 
 ## Installation
 
@@ -26,11 +27,7 @@ This PowerShell script automates the process of updating DLL files for games, pa
 
 ## Usage
 
-### 1. Drag and Drop
-
-Drag and drop a game directory onto the script (`update_sk.ps1`) to process only that directory.
-
-### 2. Use `game_paths.txt`
+### 1. Add Game Paths
 
 - Create a `game_paths.txt` file in the script directory.
 - Add paths to the game directories you want to process, one per line.
@@ -46,7 +43,7 @@ C:\Games\Steam
 D:\Games\Other
 ```
 
-### 3. Blacklist Specific Games
+### 2. Add Blacklisted Games
 
 - Create a `blacklist.txt` file in the script directory.
 - Add game folder names to exclude from processing, one per line.
@@ -62,13 +59,10 @@ CoreKeeper
 DarkAndDarker
 ```
 
-### 4. Run the Script
+### 3. Run the Script
 
-- Open a PowerShell terminal.
-- Run the script directly:
-  ```
-  .\update_sk.ps1
-  ```
+- Use the `update_sk.bat` file to execute the script.
+- The script processes directories specified in `game_paths.txt` and skips blacklisted folders listed in `blacklist.txt`.
 
 ### Output
 
@@ -97,3 +91,7 @@ This script is provided "as is" without warranty of any kind. Use it at your own
 ---
 
 For questions or support, feel free to create an issue in this repository.
+
+### Note
+
+Dragging and dropping directly onto the `.ps1` script is not supported; always use the `update_sk.bat` file for execution.
