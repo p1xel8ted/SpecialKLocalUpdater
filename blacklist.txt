@@ -1,0 +1,2 @@
+; add games to blacklist, one per line. Ensure it's the folder name
+NieR Replicant ver.1.22474487139

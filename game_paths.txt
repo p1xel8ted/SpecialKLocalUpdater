@@ -1,0 +1,9 @@
+; add game directories below. Script searches sub-directories.
+G:\Games
+G:\FitGirl
+G:\SteamLibrary\steamapps\common
+F:\Games
+F:\SteamLibrary\steamapps\common
+E:\AFOP
+E:\SteamLibrary\steamapps\common
+H:\SteamLibrary\steamapps\common
