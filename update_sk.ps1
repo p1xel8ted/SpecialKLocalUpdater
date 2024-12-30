@@ -1,3 +1,17 @@
+# Function to determine version of a DLL
+function Get-DLLVersion {
+    param ([string]$FilePath)
+
+    try {
+        $FileVersionInfo = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($FilePath)
+        return $FileVersionInfo.FileVersion
+    } catch {
+        Write-Warning "Failed to get version info for ${FilePath}: $($_.Exception.Message)"
+        return $null
+    }
+}
+
+
 # Function to determine the bitness of a DLL
 function Get-DLLBitness {
     param ([string]$FilePath)
@@ -123,7 +137,8 @@ foreach ($SearchRoot in $SearchRoots) {
                 if ($FileVersionInfo.FileDescription -like "*Special K*") {
                     $MatchingFiles += $File.FullName
                     $Bitness = Get-DLLBitness -FilePath $File.FullName
-                    Write-ColoredLog "Found matching DLL: $($File.FullName) ($Bitness)" -Color "Green"
+                    $Version = Get-DLLVersion -FilePath $File.FullName
+                    Write-ColoredLog "Found matching DLL: $($File.FullName) ($Version $Bitness)" -Color "Green"
 
                     # Select the appropriate replacement DLL
                     $ReplacementDLL = if ($Bitness -eq "64-bit") { $ReplacementDLL64 } elseif ($Bitness -eq "32-bit") { $ReplacementDLL32 } else { $null }
@@ -132,7 +147,7 @@ foreach ($SearchRoot in $SearchRoots) {
                         # Replace the file with the same name
                         try {
                             Copy-Item -Path $ReplacementDLL -Destination $File.FullName -Force
-                            Write-ColoredLog "Replaced: $($File.FullName) with $ReplacementDLL" -Color "Green"
+                            Write-ColoredLog "Replaced: $($File.FullName) with $ReplacementDLL (as $($File.Name))" -Color "Green"
                             $GamesUpdated++
                         } catch {
                             Write-ColoredLog "Failed to replace $($File.FullName): $_" -Color "Red"

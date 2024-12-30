@@ -5,11 +5,10 @@ This PowerShell script is specifically designed to update "Special K" DLL files 
 ## Features
 
 - **DLL Replacement:** Automatically replaces existing Special K DLLs with updated versions for both 32-bit and 64-bit architectures.
-- **Multi-Directory Support:** Process multiple game directories at once by specifying them in a `game_paths.txt` file.
+- **Multi-Directory Support:** Process multiple game directories at once by specifying them in a `game_paths.txt` file or dragging a directory onto the script.
 - **Blacklist Management:** Skip specific game folders by adding their names to a `blacklist.txt` file.
 - **Comments in Configuration Files:** Lines starting with `;` in `game_paths.txt` or `blacklist.txt` are treated as comments and ignored.
 - **Dynamic Backup Support:** If replacement DLLs are not found locally, the script looks for backups in `%LocalAppData%\Programs\Special K` (default install location for Special K).
-- **Priority Management:** The script prioritizes DLLs found alongside the script before using the local Special K install.
 - **Colored Output:** Provides clear and color-coded log messages for better readability.
 
 ## Requirements
@@ -24,6 +23,8 @@ This PowerShell script is specifically designed to update "Special K" DLL files 
 2. Ensure you have the updated `SpecialK32.dll` and `SpecialK64.dll` files either:
    - In the same folder as the script.
    - In the backup folder: `%LocalAppData%\Programs\Special K` (default install location for Special K).
+
+The script will priortise DLL's found alongside the script before using the local SpecialK install.
 
 ## Usage
 
@@ -62,7 +63,7 @@ DarkAndDarker
 ### 3. Run the Script
 
 - Use the `update_sk.bat` file to execute the script.
-- The script processes directories specified in `game_paths.txt` and skips blacklisted folders listed in `blacklist.txt`.
+- The script processes directories specified in `game_paths.txt` and skips blacklisted folders in `blacklist.txt`.
 
 ### Output
 
