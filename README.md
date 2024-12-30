@@ -1,6 +1,6 @@
 # Special K Replacement Script
 
-This PowerShell script is specifically designed to update "Special K" DLL files in game directories. It ensures that only the "Special K" framework DLLs are updated, supports bulk operations across multiple game directories, and prevents unintentional updates through a configurable blacklist.
+This PowerShell script is specifically designed to update "Special K" DLL files in game directories. It ensures that only the "Special K" DLLs are updated, supports bulk operations across multiple game directories, and prevents unintentional updates through a configurable blacklist.
 
 ## Features
 
