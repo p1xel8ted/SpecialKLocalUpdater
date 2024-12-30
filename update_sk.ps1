@@ -114,20 +114,24 @@ $GamesSkipped = 0
 
 # Process each search root
 foreach ($SearchRoot in $SearchRoots) {
-    Write-ColoredLog "Searching $SearchRoot ..." -Color "Cyan"
-    $GamesSearched++
+    Write-ColoredLog "Searching root directory: $SearchRoot..." -Color "Cyan"
 
-    # Log the first level subdirectories being searched
-    Get-ChildItem -Path $SearchRoot -Directory | ForEach-Object {
-        if ($Blacklist -contains $_.Name) {
-            Write-ColoredLog "Skipping blacklisted folder: $($_.Name)" -Color "Magenta"
+    # Get first-level subdirectories
+    $SubDirectories = Get-ChildItem -Path $SearchRoot -Directory
+
+    foreach ($SubDirectory in $SubDirectories) {
+        # Skip blacklisted folders
+        if ($Blacklist -contains $SubDirectory.Name) {
+            Write-ColoredLog "Skipping blacklisted folder: $($SubDirectory.Name)" -Color "Magenta"
             $GamesSkipped++
-            return
+            continue
         }
 
-        Write-ColoredLog "Searching $($_.Name) ..." -Color "Cyan"
+        Write-ColoredLog "Checking $($SubDirectory.Name)..." -Color "Cyan"
+        $GamesSearched++  # Increment for each first-level subdirectory
 
-        Get-ChildItem -Path $_.FullName -Recurse -Filter "*.dll" | ForEach-Object {
+        # Process DLL files within this subdirectory (existing logic)
+        Get-ChildItem -Path $SubDirectory.FullName -Recurse -Filter "*.dll" | ForEach-Object {
             $File = $_
             try {
                 # Get the file version info
@@ -138,16 +142,24 @@ foreach ($SearchRoot in $SearchRoots) {
                     $MatchingFiles += $File.FullName
                     $Bitness = Get-DLLBitness -FilePath $File.FullName
                     $Version = Get-DLLVersion -FilePath $File.FullName
-                    Write-ColoredLog "Found matching DLL: $($File.FullName) ($Version $Bitness)" -Color "Green"
+                    Write-ColoredLog "Found $($File.Name) ($Version $Bitness)" -Color "Green"
 
                     # Select the appropriate replacement DLL
                     $ReplacementDLL = if ($Bitness -eq "64-bit") { $ReplacementDLL64 } elseif ($Bitness -eq "32-bit") { $ReplacementDLL32 } else { $null }
+
+                    $ReplacementVersion = Get-DLLVersion -FilePath $ReplacementDLL
+                    $NewerVersion = [version]$ReplacementVersion -gt [version]$Version
+
+                    iF (-not $NewerVersion) {
+                        Write-ColoredLog "No update required..." -Color "Green"
+                        return
+                    }
 
                     if ($ReplacementDLL) {
                         # Replace the file with the same name
                         try {
                             Copy-Item -Path $ReplacementDLL -Destination $File.FullName -Force
-                            Write-ColoredLog "Replaced: $($File.FullName) with $ReplacementDLL (as $($File.Name))" -Color "Green"
+                            Write-ColoredLog "Updating $($File.Name) to $ReplacementVersion" -Color "Green"
                             $GamesUpdated++
                         } catch {
                             Write-ColoredLog "Failed to replace $($File.FullName): $_" -Color "Red"
