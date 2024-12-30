@@ -61,7 +61,7 @@ DarkAndDarker
 ```
 
 ### 3. Run the Script
-
+> You can drag and drop a game directory onto `update_sk.bat` to process only that folder.
 - Use the `update_sk.bat` file to execute the script.
 - The script processes directories specified in `game_paths.txt` and skips blacklisted folders in `blacklist.txt`.
 
