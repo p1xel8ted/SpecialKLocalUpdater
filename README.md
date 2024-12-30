@@ -36,7 +36,7 @@ The script will priortise DLL's found alongside the script before using the loca
 
 Example:
 
-```
+```ini
 ; Path to my Steam games
 C:\Games\Steam
 
@@ -52,7 +52,7 @@ D:\Games\Other
 
 Example:
 
-```
+```ini
 ; Skip CoreKeeper
 CoreKeeper
 
