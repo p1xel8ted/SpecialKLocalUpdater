@@ -9,6 +9,9 @@ This PowerShell script is specifically designed to update "Special K" DLL files 
 - **Blacklist Management:** Skip specific game folders by adding their names to a `blacklist.txt` file.
 - **Comments in Configuration Files:** Lines starting with `;` in `game_paths.txt` or `blacklist.txt` are treated as comments and ignored.
 - **Dynamic Backup Support:** If replacement DLLs are not found locally, the script looks for backups in `%LocalAppData%\Programs\Special K` (default install location for Special K).
+- **Verbose Mode:** Use `-v` or `-verbose` flag for detailed logging of what the script is doing.
+- **Optimized Scanning:** Only scans directories containing executables and checks known Special K target DLL names for fast performance.
+- **Mod Loader Aware:** Automatically skips mod loader directories (MelonLoader, BepInEx, doorstop_libs).
 - **Colored Output:** Provides clear and color-coded log messages for better readability.
 
 ## Requirements
@@ -24,7 +27,7 @@ This PowerShell script is specifically designed to update "Special K" DLL files 
    - In the same folder as the script.
    - In the backup folder: `%LocalAppData%\Programs\Special K` (default install location for Special K).
 
-The script will priortise DLL's found alongside the script before using the local SpecialK install.
+The script will prioritise DLLs found alongside the script before using the local SpecialK install.
 
 ## Usage
 
@@ -61,9 +64,23 @@ DarkAndDarker
 ```
 
 ### 3. Run the Script
-> You can drag and drop a game directory onto `update_sk.bat` to process only that folder.
-- Use the `update_sk.bat` file to execute the script.
-- The script processes directories specified in `game_paths.txt` and skips blacklisted folders in `blacklist.txt`.
+
+```batch
+# Standard usage (reads from game_paths.txt)
+update_sk.bat
+
+# Process a specific directory
+update_sk.bat "C:\Games\SomeGame"
+
+# Verbose mode (detailed logging)
+update_sk.bat -v
+update_sk.bat -verbose
+
+# Verbose mode with specific directory
+update_sk.bat -v "C:\Games\SomeGame"
+```
+
+You can also drag and drop a game directory onto `update_sk.bat` to process only that folder.
 
 ### Output
 
@@ -74,6 +91,7 @@ The script provides color-coded output:
 - **Yellow:** Warnings or fallback paths used.
 - **Magenta:** Skipped folders (blacklisted).
 - **Red:** Errors or critical issues.
+- **Dark Gray:** Verbose logging (when `-v` flag is used).
 
 At the end of execution, the script displays a summary:
 
